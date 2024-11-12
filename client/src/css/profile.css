@@ -1,0 +1,59 @@
+.profile_section{
+    padding-top: 4rem;
+    width: 80%;
+    margin: auto;
+}
+.names >div,.cityNphone >div{
+    width: 50%;
+}
+.names, .cityNphone{
+    width: 100%;
+}
+label{
+    text-align: left;
+    margin-left: 5px;
+}
+.pfp_btn{
+    width: 30%;
+    gap: 2rem;
+}
+.logout_a{
+    height: 2.3rem;
+    position: relative;
+    width:50%;
+    cursor: pointer;
+}
+.logout{
+    border-radius: 4px;
+    background-color: #c84343;
+    border: none;
+    width: 100%;
+    height: 100%;
+    color: white;
+}
+.update_btn{
+    position: relative;
+    width: 50%;
+}
+.error_pfp_div,.update_success{
+    border-radius: 7px;
+    position: fixed;
+    width: 21%;
+    gap: 12px;
+    top: 13%;
+    right: 3%;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 8px;
+    align-items: center;
+    /* flex-direction: column; */
+    z-index: 100;
+}
+.error_pfp_div{
+    background-color: rgb(255, 248, 248);
+    color: red;
+}
+.update_success{
+    background-color: rgb(216, 255, 216);
+    color: green;
+}

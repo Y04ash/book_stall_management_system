@@ -1,0 +1,212 @@
+.general_details{
+  display: flex;
+  width: 70%;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  background: #f9f9f9; /* Light background */
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  /* height: 540px; */
+  margin:  auto;
+}
+.form-container input  {
+    width: 90%; /* Make the input take full width of the container */
+    position: relative;
+    padding: 10px;
+    margin: 5px;
+    border-radius: 6px;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    
+    
+  }
+  .form-control:focus{
+    border: 2px solid rgb(151, 43, 13)
+  }
+  .form-control{
+    box-shadow: 0px 0px 4px 0.5px grey;
+  }
+  .container{
+    background-color: #fef3c7;
+    margin: 0;
+  }
+  .form_heading{
+    width: 100%;
+    font-size: 1.5rem;
+    text-align: center;
+  }
+  .form_heading h1{
+    margin: 0.5rem 0;
+  }
+  .form-container {
+    padding: 20px;
+    width: 90%; /* Set form width */
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    padding-top: 3rem;
+  }
+.twin_input{
+  display: flex;
+  position: relative;
+  width: 100%;
+}
+.input_field{
+  width: 60%;
+  position: relative;
+  text-align: center;
+}
+.input_field h1{
+  font-size: 1.8rem;
+  color: #7c1e1e; 
+  margin-bottom: 0.1rem;
+}
+.input_field textarea{
+  width: 90%;
+  position: relative;
+
+}
+/* .twin_input:nth-child(1){
+  width: 50%;
+}
+.twin_input:nth-child(2){
+  width: 50%;
+} */
+  /* Add style for the submit button */
+  .submit-btn,.final-submit-btn {
+    background-color: #7c1e1e;
+    color: white;
+    padding: 10px 20px;
+    font-size: 1.6rem;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    width: 80%;
+    transform: translate(0, 20%);
+    height: 85%;
+  }
+  
+  .submit-btn:hover {
+    opacity: 0.9; /* Slight hover effect */
+  }
+  .heading{
+    margin: 0;
+    margin-top: 20px;
+    color:#692805;
+  }
+  .back_btn{
+    top:13%;
+    position: absolute;
+    left: 5%;
+    font-size: 2rem;
+    cursor: pointer;
+  }
+  .input_field p{
+    height: auto;
+    width: 80%;
+    background: beige;
+    padding: 0.4rem;
+  }
+  .final-submit-btn{
+    width: 20%;
+  }
+  .secondary_message{
+    display: flex;
+    justify-content: space-between;
+  }
+  .error_div{
+    padding: 0.5rem;
+    /* background: rgba(255, 194, 194, 0.573); */
+    width: 45%;
+    position: relative;
+    font-weight: 600;
+    font-size: 1.3rem;
+    color: #ff0000;
+    border-radius: 5px;
+    height: 2rem;
+    /* background: #ff000042; */
+    text-align: left;
+    margin-left: 9%;
+    width: 45%;
+    position: relative;
+  }
+  .text-end{
+    width: 45%;
+    position: relative;
+  }
+  .success_div{
+    top:50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    position: fixed;
+    width: 34%;
+    height: 40%;
+    z-index: 10;
+    background-color: rgb(64 151 21);
+    border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+  }
+  .success{
+    color: white;
+    margin-bottom: 1rem;
+    font-size: 3rem;
+  }
+  .ok_btn{
+    
+    font-weight: 700;
+    font-size: 1.2rem;
+    background: beige;
+    border: none;
+    outline: none;
+    border-radius: 7px;
+    height: 15%;
+    width: 25%;
+    cursor: pointer;
+  }
+  .ok_btn >a{
+    text-decoration: none;
+    color: brown;
+  }
+
+  .cross{
+    position: absolute;
+    top: 5%;
+    right: 4%;
+    cursor: pointer;
+    font-size: 1.5rem;
+    color: rgb(250, 250, 250);
+  }
+
+  .sub_err_div{
+    display: flex;
+    z-index: 100;
+    width: 20%;
+    position: fixed;
+    top: 13%;
+    right: 5%;
+    flex-direction: row-reverse;
+    align-content: center;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 10px;
+    background-color: rgba(255, 220, 220, 0.954);
+  }
+  .sub_err{
+    color: red;
+    font-size: 1.5rem;
+    margin-left: 13%;
+
+  }
+  .sub_cross{
+    margin-right: 20px;
+    cursor: pointer;
+  }
+ 
