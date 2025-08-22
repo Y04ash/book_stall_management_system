@@ -7,6 +7,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [credValid, setCredValid] = useState(true);
 const BASE_URL = import.meta.env.VITE_BASE_URL;
+const FRONTEND_URL = import.meta.env.VITE_FRONTEND_URL;
 const navigate = useNavigate()
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -26,7 +27,7 @@ const navigate = useNavigate()
     } else {
       setCredValid(true);
       // window.location.href = "/home";
-      navigate("/home");
+      navigate(FRONTEND_URL + "/home");
     }
   };
 
