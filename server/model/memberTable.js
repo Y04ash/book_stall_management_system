@@ -10,6 +10,8 @@ const memberSchema = new mongoose.Schema({
     password: { type: String, required: true }, // Store hashed passwords
     address:{type:String, required:true},
     city:{type:String, required:true},
+    state:{type:String, required:true},
+    gender:{type:String, enum: ['Male', 'Female', 'Other'], required: true},
     role: { 
         type: String, 
         enum: ['admin', 'member'], 

@@ -1,98 +1,93 @@
+
 // src/Pages/Login.jsx
 import React, { useState } from "react";
-import "../css/Login.css"; // For styling, create this file later
-
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [rememberMe, setRememberMe] = useState(false);
-  const [credValid,setCredValid] = useState(true)
+  const [credValid, setCredValid] = useState(true);
+const BASE_URL = import.meta.env.VITE_BASE_URL;
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle login logic here (e.g., API call)
-    const credentials = {
-      email,
-      password,
-    };
-    const response = await fetch("http://localhost:5000/", {
+
+    const credentials = { email, password };
+    const response = await fetch(`${BASE_URL}/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(credentials),
-      credentials: "include", 
+      credentials: "include",
     });
 
     if (!response.ok) {
-      // Redirect to /home on successful login
-      // window.location.href = "/"
-      setCredValid(false)
-      setIsLogedIn(false)
+      setCredValid(false);
       const errorData = await response.json();
       console.error(errorData.message);
-    } else{
-      setCredValid(true)
+    } else {
+      setCredValid(true);
       window.location.href = "/home";
-      const response = await fetch("http://localhost:5000/home", {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include", 
-      });
-      setIsLogedIn(true)
-
     }
-
-    console.log(
-      "Email:",
-      email,
-      "Password:",
-      password
-    );
   };
 
   return (
-    <div className="logIn_outer">
-    {
-      !credValid && (
-      <div className="invalid_cred_container">
-        <p>Invalid Credentials</p>
-      </div>)
-    }
-    <div className="login-container">
-      <form onSubmit={handleSubmit} className="login-form">
-        <h2>Login</h2>
-        <label>
-          Email:
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </label>
-        <label>
-          Password:
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </label>
-        {/* <label className="remember-me">
-          <input
-            type="checkbox"
-            checked={rememberMe}
-            onChange={() => setRememberMe(!rememberMe)}
-          />
-          Remember Me
-        </label> */}
-        <button type="submit" className="login-button">
-          Login
-        </button>
-        {/* <a href="#" className="forgot-password">
-          Forgot Password?
-        </a> */}
-      </form>
-    </div>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 flex items-center justify-center">
+      <div className="max-w-md w-full mx-4">
+        {!credValid && (
+          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6">
+            Invalid credentials. Please try again.
+          </div>
+        )}
+
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
+          <div className="text-center mb-8">
+            <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+              <span className="text-white text-2xl font-bold">🔑</span>
+            </div>
+            <h1 className="text-2xl font-bold text-gray-900">Welcome Back</h1>
+            <p className="text-gray-600 mt-2">Sign in to your account</p>
+          </div>
+
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Enter your email"
+                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                required
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Password</label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Enter your password"
+                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                required
+              />
+            </div>
+
+            <button
+              type="submit"
+              className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors duration-200 font-medium"
+            >
+              Sign In
+            </button>
+          </form>
+
+          <div className="mt-6 text-center">
+            <a
+              href="/register"
+              className="text-blue-600 hover:text-blue-700 text-sm font-medium"
+            >
+              Don't have an account? Register here
+            </a>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

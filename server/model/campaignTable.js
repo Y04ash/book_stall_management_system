@@ -14,12 +14,12 @@ const campaignSchema = new mongoose.Schema({
     startDate: { type: Date, required: true },
     totalSales: { type: mongoose.Schema.Types.Decimal128, default: null }, // Nullable
     totalBooksSold: { type: Number, default: null }, // Nullable
-    books: [
+    products: [
         {
-            bookId: { type: Number, required: true, ref: 'Warehouse' }, // References bookId in Warehouse schema
+            productId: { type: Number, required: true, ref: 'Warehouse' }, // References bookId in Warehouse schema
             quantity: { type: Number, required: true }, // Quantity of each book needed for the campaign
             price: { type: Number }, // Field to store the price of the book
-           title: { type: String }, // Field to store the title of the book
+           name: { type: String }, // Field to store the title of the book
            category: { type: String }, // Field to store the category of the book
            subCategory: { type: String }, // Field to store the sub-category of the book
 

@@ -1,215 +1,108 @@
-import React, { useEffect, useState } from "react";
 
+import React, { useState, useEffect } from "react";
+import { Package, Users, ShoppingCart,TrendingUp } from "lucide-react";
+import Navbar from "../Components/Navbar";
+import Footer from "../Components/Footer";
 import Inventory from "./Inventory";
 import Customers from "./Customers";
 import OrderDetails from "./OrderDetails";
-import "../css/individualPostContainer.css";
+import Analytics from "./Analytics";
 import { useParams } from "react-router-dom";
-import Navbar from "../Components/Navbar";
-import Footer from "../Components/Footer";
-import Campaign from "./Campaign";
-const IndividuaPost = () => {
-
-
-  const [individualPage, setIndividualPage] = useState("inventory");
-  const [sales, setSales] = useState([]);
-  const [inventory, setInventory] = useState([]);
- const [customerOrder, setCustomerOrder] = useState([]); // Only selected rows with input
-  const [grandTotal, setGrandTotal] = useState(0);
-  const [salesId, setSalesId] = useState(1);
-  const [error, setError] = useState("");
-  const [campEnded,setCampEnded]=useState(false)
+import "../App.css"
+const ModernIndividualCampaign = () => {
   const { campaignId } = useParams();
-  const [newPurchase,setNewPurchase] = useState([])
-  const [customer,setCustomer]=useState([])
-  const [purchase,setPurchase]=useState([])
-  const [campaign,setCampaign]=useState({})
-
-  useEffect(() => {
-    console.log("in after de ", inventory);
-  }, [inventory]);
-  useEffect(() => {
-    // setting the total
-    setGrandTotal(inventory.reduce((sum, obj) => sum + obj.total, 0));
-  }, [inventory]);
-
-  // useEffect(()=>{
-  //   console.log("customer data ",customerOrder)
-  // },[customerOrder])
-
+  const [activeTab, setActiveTab] = useState("inventory");
+  const [inventory, setInventory] = useState([]);
+  const [customer, setCustomer] = useState([]);
+  const [purchase, setPurchase] = useState([]);
+  const [campaign, setCampaign] = useState({});
+  const [hasCampEnded, setHasCampEnded] = useState(false);
+  const [error, setError] = useState("");
+  const BASE_URL = import.meta.env.VITE_BASE_URL;
+  // Fetch data from backend
   useEffect(() => {
     const fetchCampaign = async () => {
-      
       try {
-          const response = await fetch(`http://localhost:5000/Campaign/${campaignId}`, {method:'GET',
-            headers: { "Content-Type": "application/json" },
-        credentials: "include", // Include cookies for authentication
-          });
-          if (!response.ok) {
-              throw new Error('Campaign not found');
-          }
-          const result = await response.json();
-          console.log(result.data.campaign.books)
+        const response = await fetch(`${BASE_URL}/campaign/${campaignId}`, {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+        });
+        if (response!='ok') throw new Error("Campaign not found");
 
-          setCustomer(result.data.customer)
-          setPurchase(result.data.purchase)
-          setCampaign(result.data.campaign)
-          const inititalIventory =result.data.campaign.books.map((row)=>{
-            return {
-              ...row, order:0, total:0
-            }
-          })
-          setInventory(inititalIventory)
-
+        const result = await response.json();
+        setCustomer(result.data.customer);
+        setPurchase(result.data.purchase);
+        setCampaign(result.data.campaign);
+        setHasCampEnded(result.data.campaign.camp_ended);
+        const initInventory = result.data.campaign.products.map((row) => ({
+          ...row,
+          order: 0,
+          total: 0,
+        }));
+        setInventory(initInventory);
+        // console.log("init ", result.data.campaign);
       } catch (err) {
-          console.log(err)
-      } 
+        // console.log(err);
+      }
     };
 
     fetchCampaign();
-}, [campaignId]);
+  }, [campaignId]);
 
-  // Handle input change
-  const handleInputChange = (event, rowId) => {
-    const value = Number(event.target.value);
-  
-    // Check if input quantity exceeds available stock
-    
-    if (inventory.find((x) => x.bookId == rowId)?.quantity >= value) {
-      setError(""); // Clear error if within stock limits
- 
-      const inventoryWithInput = inventory.map((r)=>r.bookId == rowId ? {...r,order: value, total : r.price * value  } : r)
-
-      setInventory(inventoryWithInput)
-
-    } else {
-      setError("Order exceeds stock");
-    }
-  };
-  
-
-  const orderColumns = [
-    {
-      name: "ID",
-      selector: (row) => row.bookId,
-      sortable: true,
-    },
-    {
-      name: "Title",
-      selector: (row) => row.title,
-      sortable: true,
-    },
-    {
-      name: "Stock",
-      selector: (row) => row.quantity,
-      sortable: true,
-    },
-    {
-      name: "Quantity",
-      cell: (row) =>(
-        <input
-            type="text"
-            // value={row.quantity || ""}
-            onChange={(event) => handleInputChange(event, row.bookId)}
-            placeholder="Enter quantity"
-          />
-        
-        ),
-      ignoreRowClick: true,
-      allowOverflow: true,
-      sortable: true,
-    },
-    {
-      name: "Price",
-      selector: (row) => row.price,
-      sortable: true,
-    },
-    {
-      name: "Total",
-      selector: (row) => row.total,
-      sortable: true,
-    },
+  const tabs = [
+    { key: "inventory", label: "Inventory", icon: Package },
+    { key: "customers", label: "Customers", icon: Users },
+    { key: "analytics", label: "Analytics", icon: TrendingUp },
+    // Only add orders tab if campaign not ended
+    ...(!campaign.camp_ended ? [{ key: "orders", label: "Order Details", icon: ShoppingCart }] : []),
   ];
-  
-  const handleInventory = () => {
-    setIndividualPage("inventory");
-  };
-  const handleCustomers = () => {
-    setIndividualPage("customers");
-  };
-  const handleOrder = () => {
-    setIndividualPage("orderDetails");
-  };
+
   return (
     <>
-    <Navbar />
+      <Navbar />
+      <div className="min-h-screen bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          
+          {/* Tab Navigation */}
+          <div className="bg-white rounded-xl shadow-sm border border-gray-100 mb-8">
+            <div className="flex space-x-1 p-1">
+              {tabs.map(({ key, label, icon: Icon }) => (
+                <button
+                  key={key}
+                  onClick={() => setActiveTab(key)}
+                  className={`flex items-center space-x-2 px-4 py-3 rounded-lg transition-all duration-200 ${
+                    activeTab === key
+                      ? "bg-blue-600 text-white shadow-sm"
+                      : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                  }`}
+                >
+                  <Icon className="w-4 h-4" />
+                  <span className="font-medium">{label}</span>
+                </button>
+              ))}
+            </div>
+          </div>
 
-    <div className="individual_post_container">
-      <div className="individual_btn">
-       
-        <button className="camp_btn inventory" onClick={handleInventory}>
-          Inventory
-        </button>
-        <button className="camp_btn customer_list" onClick={handleCustomers}>
-          Customers
-        </button>
-        { !(campaign.camp_ended) &&( <button className="camp_btn order_details" onClick={handleOrder}>
-          Order Details
-        </button> )}
-        
+          {/* Tab Content */}
+          {activeTab === "inventory" && (
+            <Inventory inventory={inventory} setInventory={setInventory} error={error} setError={setError} hasCampEnded={hasCampEnded}setHasCampEnded={setHasCampEnded} purchase={purchase} />
+          )}
+          {activeTab === "customers" && (
+            <Customers inventory={inventory} customer={customer} purchase={purchase} setPurchase={setPurchase} />
+          )}
+          {activeTab === "orders" && (
+            <OrderDetails inventory={inventory} setInventory={setInventory} customer={customer} purchase={purchase} error={error} setError={setError} />
+          )}
+
+          {activeTab === "analytics" &&(
+            <Analytics campaignId={campaignId} inventory={inventory} customer={customer} purchase={purchase} />
+          )}
+        </div>
       </div>
-
-      {individualPage == "inventory" && (
-        <Inventory
-          orderColumns={orderColumns}
-          inventory={inventory}
-          sales={sales}
-          setSales={setSales}
-          newPurchase={newPurchase}
-          purchase={purchase}
-          setNewPurchase={setNewPurchase}
-        />
-      )}
-      {individualPage == "customers" && (
-        <Customers
-          orderColumns={orderColumns}
-          inventory={inventory}
-          sales={sales}
-          setSales={setSales}
-          grandTotal={grandTotal}
-          purchase={purchase}
-          customer={customer}
-          newPurchase={newPurchase}
-          setNewPurchase={setNewPurchase}
-        />
-      )}
-
-      
-      {individualPage == "orderDetails" &&(
-        <OrderDetails
-          orderColumns={orderColumns}
-          inventory={inventory}
-          setInventory={setInventory}
-          sales={sales}
-          setSales={setSales}
-          // handleRowSelected={handleRowSelected}
-          customerOrder={customerOrder}
-          setCustomerOrder={setCustomerOrder}
-          grandTotal={grandTotal}
-          salesId={salesId}
-          setSalesId={setSalesId}
-          error={error}
-          setError={setError}
-          customer={customer}
-          setCustomer={setCustomer}
-          purchase={purchase}
-          setPurchase={setPurchase}
-        />
-      )}
-    </div>
-    <Footer />
+      <Footer />
     </>
   );
 };
 
-export default IndividuaPost;
+export default ModernIndividualCampaign;

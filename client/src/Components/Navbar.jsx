@@ -1,165 +1,183 @@
-import React ,{useState}from "react";
-import "../css/styles.css";
+import React, { useEffect, useState } from "react";
 import { CgProfile } from "react-icons/cg";
-
+import { FaHome, FaCalendarAlt, FaPlus, FaBars, FaTimes } from "react-icons/fa"; 
+import "../App.css";
+import { TbBuildingWarehouse } from "react-icons/tb";
+import maleImg from "../../images/male-removebg-preview1.png";
+import femaleImg from "../../images/female-removebg-preview1.png";
+import { BoltIcon } from "@heroicons/react/24/outline";
 const Navbar = () => {
-
-const handleAddCampaign =async (event)=>{
-  event.preventDefault(); // Prevent default anchor behavior
-
-  try {
-    const response = await fetch("http://localhost:5000/Add-campaign", {
+  const [gender, setGender] = useState("");
+  const [isOpen, setIsOpen] = useState(false); // state for mobile menu
+const BASE_URL = import.meta.env.VITE_BASE_URL;
+  const handleAddCampaign = async (event) => {
+    event.preventDefault();
+    const response = await fetch(`${BASE_URL}/Add-campaign`, {
       method: "GET",
       headers: { "Content-Type": "application/json" },
-      credentials: "include", // Include cookies for authentication
+      credentials: "include",
     });
-
-    if (response.ok) {
-      const result = await response.json();
-      // setIsLogedIn(true)
-      // Optionally, redirect or update the UI here
-      window.location.href = "/Add-campaign";
-      // const res = await fetch("http://localhost:5000/Add-campaign",{
-      //   method:"GET",
-      //   headers: { "Content-Type": "application/json" },
-      // credentials: "include", // Include cookies for authentication
-
-      // })
-    } else {
-      console.error("Failed to fetch campaign data:", response.statusText);
-    }
-  } catch (error) {
-    console.error("Error:", error);
-  }
+    if (response.ok) window.location.href = "/Add-campaign";
+  };
+const handleInventory = async (event) => {
+  event.preventDefault();
+  const response = await fetch(`${BASE_URL}/getWarehouse`, {
+    method: "GET",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+  });
+  if (response.ok) window.location.href = "/createWarehouse";
 }
-
-const handleHome=async (event)=>{
-  event.preventDefault(); // Prevent default anchor behavior
-
-  try {
-    const response = await fetch("http://localhost:5000/home", {
+  const handleHome = async (event) => {
+    event.preventDefault();
+    const response = await fetch(`${BASE_URL}/home`, {
       method: "GET",
       headers: { "Content-Type": "application/json" },
-      credentials: "include", // Include cookies for authentication
+      credentials: "include",
     });
+    if (response.ok) window.location.href = "/home";
+  };
 
-    if (response.ok) {
-      const result = await response.json();
-      // Optionally, redirect or update the UI here
-      window.location.href = "/home";
-      setIsLogedIn(true)
-    } else {
-      console.error("Failed to fetch campaign data:", response.statusText);
-    }
-  } catch (error) {
-    console.error("Error:", error);
-  }
-}
-
-const handleCampaign =async (event)=>{
-  event.preventDefault(); // Prevent default anchor behavior
-
-  try {
-    const response = await fetch("http://localhost:5000/Campaign", {
+  const handleCampaign = async (event) => {
+    event.preventDefault();
+    const response = await fetch(`${BASE_URL}/Campaign`, {
       method: "GET",
       headers: { "Content-Type": "application/json" },
-      credentials: "include", // Include cookies for authentication
+      credentials: "include",
     });
+    if (response.ok) window.location.href = "/Campaign";
+  };
 
-    if (response.ok) {
-      const result = await response.json();
-      console.log("Campaign data:", result);
-      // Optionally, redirect or update the UI here
-      window.location.href = "/Campaign";
-      setIsLogedIn(true)
-    } else {
-      console.error("Failed to fetch campaign data:", response.statusText);
-    }
-  } catch (error) {
-    console.error("Error:", error);
-  }
-}
-
-const handleLogout =async (event)=>{
-  event.preventDefault(); // Prevent default anchor behavior
-
-  try {
-    const response = await fetch("http://localhost:5000/logout", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      credentials: "include", // Include cookies for authentication
-    });
-
-    
-    if (response.ok) {
-      console.log("Logged out successfully");
-      // Redirect to login or homepage after logout
-      window.location.href = "/"; // Adjust path as needed
-      setIsLogedIn(false)
-    } else {
-      console.error("Failed to log out:", response.statusText);
-    }
-  } catch (error) {
-    console.error("Error in logging out:", error);
-  }
-}
-
-const handleProfile =async(event)=>{
-  event.preventDefault(); // Prevent default anchor behavior
-
-  try {
-    const response = await fetch("http://localhost:5000/profile", {
+  const handleProfile = async (event) => {
+    event.preventDefault();
+    const response = await fetch(`${BASE_URL}/profile`, {
       method: "GET",
       headers: { "Content-Type": "application/json" },
-      credentials: "include", // Include cookies for authentication
+      credentials: "include",
     });
-    if (response.ok) {
-      const result = await response.json()
-      window.location.href = "/profile"; // Adjust path as needed
-    } else {
-      console.error("Failed to fetch pfp:", response.statusText);
-    }
-  } catch (error) {
-    console.error("ERR to fetch pfp", error);
-  }
-}
+    if (response.ok) window.location.href = "/profile";
+  };
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const res = await fetch(`${BASE_URL}/profile`, {
+        method: "GET",
+        credentials: "include",
+      });
+      if (res.ok) {
+        const result = await res.json();
+        if (result.status === "ok") setGender(result.data.gender);
+      }
+    };
+    fetchUser();
+  }, []);
 
   return (
-    // <div className="nav_outer">
-      <nav className="nav">
-        <div className="logo_title">
-          <div className="logo"></div>
-          <a href="/home" onClick={handleHome} className="site-title">
-            Book Stock Pro
-          </a>
+    <nav className="bg-white shadow-sm border-b border-gray-100 sticky top-0 z-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-16">
+          {/* Logo */}
+          <div className="flex items-center space-x-3">
+            <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center">
+              <BoltIcon className="w-5 h-5 text-white" />
+            </div>
+            <span className="text-xl font-semibold text-gray-900">
+              SellSphere
+            </span>
+          </div>
+
+          {/* Desktop Menu */}
+          <div className="hidden md:flex items-center space-x-8">
+            <button
+              onClick={handleHome}
+              className="flex items-center space-x-2 px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 transition-colors duration-200"
+            >
+              <FaHome className="w-4 h-4" />
+              <span>Home</span>
+            </button>
+
+            <button
+              onClick={handleCampaign}
+              className="flex items-center space-x-2 px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 transition-colors duration-200"
+            >
+              <FaCalendarAlt className="w-4 h-4" />
+              <span>Campaigns</span>
+            </button>
+
+            <button
+              onClick={handleAddCampaign}
+              className="flex items-center space-x-2 px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 transition-colors duration-200"
+            >
+              <FaPlus className="w-4 h-4" />
+              <span>Add Campaign</span>
+            </button>
+            <button
+              onClick={handleInventory}
+              className="flex items-center space-x-2 px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 transition-colors duration-200"
+            >
+             
+               <TbBuildingWarehouse className="w-4 h-4 "/>
+              <span>Inventory</span>
+            </button>
+          </div>
+
+          {/* Profile + Hamburger */}
+          <div className="flex items-center space-x-4">
+            <img
+              onClick={handleProfile}
+              src={
+                gender === "Male"
+                  ? maleImg
+                  : gender === "Female"
+                  ? femaleImg
+                  : "https://via.placeholder.com/120"
+              }
+              alt="Profile"
+              className="w-10 h-10 rounded-full object-cover cursor-pointer"
+            />
+
+            {/* Hamburger button (Mobile only) */}
+            <button
+              className="md:hidden p-2 text-gray-600 hover:text-gray-900"
+              onClick={() => setIsOpen(!isOpen)}
+            >
+              {isOpen ? <FaTimes size={20} /> : <FaBars size={20} />}
+            </button>
+          </div>
         </div>
-        <ul>
-          <li className="tabs">
-            <a href="/home" onClick={handleHome}>Home</a>
-          </li>
-          <li className="tabs">
-            <a href="/Campaign" onClick={handleCampaign}>Campaign</a>
-          </li>
-          <li className="tabs">
-            <a onClick={handleAddCampaign}>Add Campaign</a>
-          </li>
-          {/* <li className="tabs">
-            <a href="/Login">Login</a>
-          </li> */}
-        
+      </div>
 
-          <li className="tabs">
-            <a href="/profile" onClick={handleProfile}><CgProfile className="pfp_logo"/></a>
-          </li>
-          {/* <li className="tabs">
-            <a href="/" onClick={handleLogout}>LogOut</a>
-          </li> */}
-          
-
-           
-        </ul>
-      </nav>
-    // </div>
+      {/* Mobile Menu */}
+      {isOpen && (
+        <div className="md:hidden bg-white border-t border-gray-100 shadow-lg">
+          <button
+            onClick={handleHome}
+            className="flex items-center w-full px-4 py-3 text-gray-600 hover:bg-gray-100"
+          >
+            <FaHome className="w-4 h-4 mr-2" /> Home
+          </button>
+          <button
+            onClick={handleCampaign}
+            className="flex items-center w-full px-4 py-3 text-gray-600 hover:bg-gray-100"
+          >
+            <FaCalendarAlt className="w-4 h-4 mr-2" /> Campaigns
+          </button>
+          <button
+            onClick={handleAddCampaign}
+            className="flex items-center w-full px-4 py-3 text-gray-600 hover:bg-gray-100"
+          >
+            <FaPlus className="w-4 h-4 mr-2" /> Add Campaign
+          </button>
+          <button
+            onClick={handleInventory}
+            className="flex items-center w-full px-4 py-3 text-gray-600 hover:bg-gray-100"
+          >
+            <TbBuildingWarehouse className="w-4 h-4 mr-2"/>
+             Inventory
+          </button>
+        </div>
+      )}
+    </nav>
   );
 };
 

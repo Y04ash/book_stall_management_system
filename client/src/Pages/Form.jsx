@@ -4,6 +4,7 @@ import GeneralDetails from "./GeneralDetails";
 import BooksForm from "./BooksForm";
 import Navbar from "../Components/Navbar";
 import Footer from "../Components/Footer";
+import "../App.css"
 function Form() {
   const [data,setData]=useState()
   // State for all input fields
@@ -15,11 +16,12 @@ function Form() {
     location: "", 
     startDate:"", 
   });
+  const BASE_URL = import.meta.env.VITE_BASE_URL;
   useEffect(()=>{
     const fetchWarehouseData= async ()=>{
       try {
-        console.log("inside fetch data in react booksform")
-        const response = await fetch('http://localhost:5000/Add-campaign', {method: "GET",
+        // console.log("inside fetch data in react booksform")
+        const response = await fetch(`${BASE_URL}/Add-campaign`, {method: "GET",
           credentials: "include", // Include credentials (cookies) in the request
           headers: {
             "Content-Type": "application/json",
@@ -27,24 +29,22 @@ function Form() {
 
         )
         
-
       const result = await response.json();
-      console.log("Result:", result);
+      // console.log("Result:", result);
       
-
       // Check if the status is "ok" before updating the state
       if (result.status == 'ok') {
-        
+        // console.log("result data",result.data)
           setData(result.data);
       } else {
         
-          console.error('Unexpected response format:', result);
+          // console.error('Unexpected response format:', result);
       }
       } catch (error) {
-        console.log(error)
+        // console.log(error)
       }
     }
-    console.log("inside useeffect")
+    // console.log("inside useeffect")
     fetchWarehouseData()
   },[])
 
@@ -55,11 +55,8 @@ function Form() {
     <Navbar />
 
     <div className="form-container">
-      {
-        isBooksForm ? 
-        <BooksForm formData={formData} setFormData={setFormData} isBooksForm={isBooksForm} setIsBooksForm={setIsBooksForm} data={data} setData={setData} /> 
-        : <GeneralDetails formData={formData} setFormData={setFormData} isBooksForm={isBooksForm} setIsBooksForm={setIsBooksForm} /> 
-      }
+      <GeneralDetails formData={formData} setFormData={setFormData} isBooksForm={isBooksForm} setIsBooksForm={setIsBooksForm} /> 
+      <BooksForm formData={formData} setFormData={setFormData} isBooksForm={isBooksForm} setIsBooksForm={setIsBooksForm} data={data} setData={setData} /> 
       
     </div>
     <Footer/>
