@@ -6,12 +6,12 @@ import { TbBuildingWarehouse } from "react-icons/tb";
 import maleImg from "../../images/male-removebg-preview1.png";
 import femaleImg from "../../images/female-removebg-preview1.png";
 import { BoltIcon } from "@heroicons/react/24/outline";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 const Navbar = () => {
   const [gender, setGender] = useState("");
   const [isOpen, setIsOpen] = useState(false); // state for mobile menu
 const BASE_URL = import.meta.env.VITE_BASE_URL;
-const navigate = Navigate();
+const navigate = useNavigate();
   const handleAddCampaign = async (event) => {
     event.preventDefault();
     const response = await fetch(`${BASE_URL}/Add-campaign`, {

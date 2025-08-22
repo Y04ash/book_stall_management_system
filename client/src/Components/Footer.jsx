@@ -1,8 +1,8 @@
 import React from "react";
 import { Home, PlusCircle, Flag, User } from "lucide-react";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 const Footer = () => {
-const navigate = Navigate()
+const navigate = useNavigate()
   return (
     <footer className="bg-gradient-to-r from-indigo-100 via-blue-100 to-indigo-200 text-gray-800 shadow-inner pt-5">
       {/* Navigation Section */}
