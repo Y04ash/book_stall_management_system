@@ -115,11 +115,11 @@ app.post('/login', async (req, res) => {
         // Generate a JWT token
         const token = jwt.sign({ userId: user.userId }, process.env.JWT_SECRET, { expiresIn: '24h' });
         // console.log(token)
-        res.cookie('token', token, {  secure: true, maxAge: 24*3600000 ,sameSite: 'lax', // Ensures cookie is accessible in same-site requests
+        res.cookie('token', token, {  secure: true, maxAge: 24*3600000 , // Ensures cookie is accessible in same-site requests
             path: '/', // Ensures it's available across routes
         }); // Secure should be true in production
         // Respond with a success message or user data
-        res.json({ status:'ok',message: 'Login successful' , redirectTo: '/home'}); // Redirecting should typically be handled on the client side
+        res.json({ status:'ok',message: 'Login successful' }); // Redirecting should typically be handled on the client side
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Server error', error: error.message });
