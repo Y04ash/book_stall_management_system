@@ -1,11 +1,13 @@
 
 // src/Pages/Login.jsx
 import React, { useState } from "react";
+import { Navigate } from "react-router-dom";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [credValid, setCredValid] = useState(true);
 const BASE_URL = import.meta.env.VITE_BASE_URL;
+const navigate = Navigate()
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -23,7 +25,8 @@ const BASE_URL = import.meta.env.VITE_BASE_URL;
       console.error(errorData.message);
     } else {
       setCredValid(true);
-      window.location.href = "/home";
+      // window.location.href = "/home";
+      navigate("/home");
     }
   };
 
@@ -80,7 +83,8 @@ const BASE_URL = import.meta.env.VITE_BASE_URL;
 
           <div className="mt-6 text-center">
             <a
-              href="/register"
+              // href="/register"
+              onClick={() => navigate("/register")}
               className="text-blue-600 hover:text-blue-700 text-sm font-medium"
             >
               Don't have an account? Register here

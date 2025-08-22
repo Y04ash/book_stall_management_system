@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import { ImCross } from "react-icons/im";
 import { IndianRupee , TrendingUp } from "lucide-react";
 import "../App.css"
+import { Navigate } from "react-router-dom";
 const Inventory = () => {
   const [revenue, setRevenue] = useState(0);
   const [totalSale, setTotalSale] = useState(0);
@@ -13,7 +14,7 @@ const Inventory = () => {
   const parsedCampaignId = Number(campaignId);
   // const [campaignPurchase, setCampaignPurchase] = useState([]);
   // fetching camp details
-
+const navigate = Navigate()
     const [inventory, setInventory] = useState([]);
     const [customer, setCustomer] = useState([]);
     const [purchase, setPurchase] = useState([]);
@@ -89,7 +90,7 @@ const handleUpdateData = async () => {
         credentials: "include",
       });
       if (response.ok) {
-        window.location.href = `/Campaign/${campaignId}`;
+        navigate(`/Campaign/${campaignId}`);
       }
     } catch (error) {
       // console.log(error);

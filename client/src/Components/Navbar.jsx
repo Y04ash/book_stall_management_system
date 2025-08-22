@@ -6,10 +6,12 @@ import { TbBuildingWarehouse } from "react-icons/tb";
 import maleImg from "../../images/male-removebg-preview1.png";
 import femaleImg from "../../images/female-removebg-preview1.png";
 import { BoltIcon } from "@heroicons/react/24/outline";
+import { Navigate } from "react-router-dom";
 const Navbar = () => {
   const [gender, setGender] = useState("");
   const [isOpen, setIsOpen] = useState(false); // state for mobile menu
 const BASE_URL = import.meta.env.VITE_BASE_URL;
+const navigate = Navigate();
   const handleAddCampaign = async (event) => {
     event.preventDefault();
     const response = await fetch(`${BASE_URL}/Add-campaign`, {
@@ -17,7 +19,7 @@ const BASE_URL = import.meta.env.VITE_BASE_URL;
       headers: { "Content-Type": "application/json" },
       credentials: "include",
     });
-    if (response.ok) window.location.href = "/Add-campaign";
+    if (response.ok) navigate("/Add-campaign");
   };
 const handleInventory = async (event) => {
   event.preventDefault();
@@ -26,7 +28,7 @@ const handleInventory = async (event) => {
     headers: { "Content-Type": "application/json" },
     credentials: "include",
   });
-  if (response.ok) window.location.href = "/createWarehouse";
+  if (response.ok) navigate("/createWarehouse");
 }
   const handleHome = async (event) => {
     event.preventDefault();
@@ -35,7 +37,7 @@ const handleInventory = async (event) => {
       headers: { "Content-Type": "application/json" },
       credentials: "include",
     });
-    if (response.ok) window.location.href = "/home";
+    if (response.ok) navigate("/home");
   };
 
   const handleCampaign = async (event) => {
@@ -45,7 +47,7 @@ const handleInventory = async (event) => {
       headers: { "Content-Type": "application/json" },
       credentials: "include",
     });
-    if (response.ok) window.location.href = "/Campaign";
+    if (response.ok) navigate("/Campaign");
   };
 
   const handleProfile = async (event) => {
@@ -55,7 +57,7 @@ const handleInventory = async (event) => {
       headers: { "Content-Type": "application/json" },
       credentials: "include",
     });
-    if (response.ok) window.location.href = "/profile";
+    if (response.ok) navigate("/profile");
   };
 
   useEffect(() => {

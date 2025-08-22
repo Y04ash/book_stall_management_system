@@ -1,13 +1,14 @@
 import React from "react";
 import { Home, PlusCircle, Flag, User } from "lucide-react";
-
+import { Navigate } from "react-router-dom";
 const Footer = () => {
+const navigate = Navigate()
   return (
     <footer className="bg-gradient-to-r from-indigo-100 via-blue-100 to-indigo-200 text-gray-800 shadow-inner pt-5">
       {/* Navigation Section */}
       <div className="flex justify-around items-center py-4">
         <a
-          href="/home"
+          onClick={() => navigate("/home")}
           className="flex flex-col items-center hover:text-indigo-600 transition"
         >
           <Home className="w-6 h-6 mb-1" />
@@ -15,7 +16,7 @@ const Footer = () => {
         </a>
 
         <a
-          href="/add-camp"
+          onClick={() => navigate("/add-camp")}
           className="flex flex-col items-center hover:text-indigo-600 transition"
         >
           <PlusCircle className="w-6 h-6 mb-1" />
@@ -23,7 +24,7 @@ const Footer = () => {
         </a>
 
         <a
-          href="/campaign"
+          onClick={() => navigate("/campaign")}
           className="flex flex-col items-center hover:text-indigo-600 transition"
         >
           <Flag className="w-6 h-6 mb-1" />
@@ -31,7 +32,7 @@ const Footer = () => {
         </a>
 
         <a
-          href="/profile"
+          onClick={() => navigate("/profile")}
           className="flex flex-col items-center hover:text-indigo-600 transition"
         >
           <User className="w-6 h-6 mb-1" />
