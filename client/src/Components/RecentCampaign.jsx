@@ -1,5 +1,5 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
+import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/Card"
+import { Badge } from "@/Components/ui/Badge"
 import { MapPin, Book, Library, Tags, IndianRupee, Calendar } from "lucide-react"
  
 export default function RecentCampaign({ campaign }) {
