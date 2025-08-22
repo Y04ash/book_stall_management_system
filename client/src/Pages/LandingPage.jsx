@@ -17,6 +17,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { useInView } from "react-intersection-observer"
 import { useNavigate } from "react-router-dom";
+import dashboardImg from "../../images/dashboard.png";
 // import { CheckIcon } from "@heroicons/react/24/solid";
 function useCounter(end, duration = 2000) {
   const [count, setCount] = useState(0);
@@ -126,7 +127,7 @@ function HeroSection() {
     }}
   >
 <motion.img
-  src="../../images/dashboard.png"
+  src={dashboardImg}
   alt="Book Stock Pro Dashboard"
   initial={{ rotateY: -15, rotateX: 8, scale: 1 }}   // Tilted along X and Y
   whileHover={{ rotateY: -5, rotateX: 3, scale: 1.05 }} // Smoothly reduces tilt
