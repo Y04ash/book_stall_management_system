@@ -9,14 +9,10 @@ const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
 // const User = require('./model/User.js'); // Import the User model
 
-const corsOptions = {
-    origin: 'http://localhost:5173', // Replace with your frontend URL
-    credentials: true, // Allow credentials (cookies, authorization headers, etc.)
-  };
 
 const app = express();
 app.use(express.json());
-app.use(cors(corsOptions));
+
 connectDB();
 require('dotenv').config();
 app.use(cookieParser()); // To parse cookies
@@ -27,15 +23,22 @@ const purchaseTable = require('./model/purchaseTable.js');
 const warehouseTable = require('./model/warehouseTable.js');
 const memberTable = require('./model/memberTable.js')
 const Warehouse = require('./model/warehouseTable.js');
-const port = 5000;
+const port = process.env.PORT || 5000;
 app.listen(port, () => {
     console.log(`app is running on ${port}`);
 });
 
-
+app.set('trust proxy', 1);
+const allowed = (process.env.CORS_ORIGINS || '').split(',').map(s => s.trim()).filter(Boolean);
+app.use(cors({
+  origin(origin, cb) {
+    if (!origin) return cb(null, true); // allow Postman/cURL
+    return cb(null, allowed.includes(origin));
+  },
+  credentials: true
+}));
 // Middleware for authentication
-
-
+const BASE_URL = process.env.BASE_URL || 'http://localhost:5000';
 // new auth
 const auth = (req, res, next) => {
     const token = req.headers.authorization?.split(' ')[1] || req.cookies.token;
@@ -52,7 +55,7 @@ const auth = (req, res, next) => {
         // console.log("inside auth",req.body)
         next();
     } catch (error) {
-        res.status(401).json({ message: 'Token is not valid',redirect:"http://localhost:5000/" });
+        res.status(401).json({ message: 'Token is not valid',redirect: `${BASE_URL}/` }); // Redirect if token is invalid
     }
 };
 
