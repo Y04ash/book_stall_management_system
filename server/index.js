@@ -115,7 +115,7 @@ app.post('/login', async (req, res) => {
         // Generate a JWT token
         const token = jwt.sign({ userId: user.userId }, process.env.JWT_SECRET, { expiresIn: '24h' });
         // console.log(token)
-        res.cookie('token', token, {  secure: false, maxAge: 24*3600000 ,sameSite: 'lax', // Ensures cookie is accessible in same-site requests
+        res.cookie('token', token, {  secure: true, maxAge: 24*3600000 ,sameSite: 'lax', // Ensures cookie is accessible in same-site requests
             path: '/', // Ensures it's available across routes
         }); // Secure should be true in production
         // Respond with a success message or user data
