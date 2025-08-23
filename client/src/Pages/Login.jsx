@@ -6,8 +6,8 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [credValid, setCredValid] = useState(true);
-const BASE_URL = import.meta.env.VITE_BASE_URL;
-const FRONTEND_URL = import.meta.env.VITE_FRONTEND_URL;
+const BASE_URL = import.meta.env.VITE_BASE_URL || 'http://localhost:5000';
+const FRONTEND_URL = import.meta.env.VITE_FRONTEND_URL || 'http://localhost:5173';
 const navigate = useNavigate()
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -21,13 +21,14 @@ const navigate = useNavigate()
     });
 
     if (!response.ok) {
+      console.log(response)
       setCredValid(false);
       const errorData = await response.json();
       console.error(errorData.message);
     } else {
       setCredValid(true);
       // window.location.href = "/home";
-      navigate(FRONTEND_URL + "/home");
+      navigate(`/home`);
     }
   };
 

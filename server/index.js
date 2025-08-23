@@ -29,14 +29,24 @@ app.listen(port, () => {
 });
 
 app.set('trust proxy', 1);
-const allowed = (process.env.CORS_ORIGINS || '').split(',').map(s => s.trim()).filter(Boolean);
-app.use(cors({
-  origin(origin, cb) {
-    if (!origin) return cb(null, true); // allow Postman/cURL
-    return cb(null, allowed.includes(origin));
-  },
-  credentials: true
-}));
+const allowedOrigins = [
+  "http://localhost:5173",                      // ✅ Local dev (Vite)
+  "https://sales-management-7y89.onrender.com"  // ✅ Your deployed frontend
+];
+
+app.use(
+  cors({
+    origin: (origin, cb) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        cb(null, true);
+      } else {
+        cb(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
+  })
+);
+
 // Middleware for authentication
 const BASE_URL = process.env.BASE_URL || 'http://localhost:5000';
 // new auth
@@ -115,7 +125,7 @@ app.post('/login', async (req, res) => {
         // Generate a JWT token
         const token = jwt.sign({ userId: user.userId }, process.env.JWT_SECRET, { expiresIn: '24h' });
         // console.log(token)
-        res.cookie('token', token, {  secure: true, maxAge: 24*3600000 , // Ensures cookie is accessible in same-site requests
+        res.cookie('token', token, {  secure: true, maxAge: 24*3600000 ,sameSite:'none', // Ensures cookie is accessible in same-site requests
             path: '/', // Ensures it's available across routes
         }); // Secure should be true in production
         // Respond with a success message or user data
